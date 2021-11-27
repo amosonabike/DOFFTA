@@ -1,8 +1,13 @@
 import numpy as np
+
 import pandas as pd
+
 import os
+
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+from matplotlib.ticker import MultipleLocator
+
 from scipy.optimize import curve_fit
 from scipy.fft import fft, fftfreq
 from scipy.stats import cauchy
@@ -313,7 +318,10 @@ def review_centre_offset(df, average_window = 11, save_figures = 'n', save_locat
     ax.axhspan(centre_offset_equilib-3*centre_offset_std, centre_offset_equilib+3*centre_offset_std, color = 'darkviolet', alpha = 0.2)
     ax.axhspan(centre_offset_equilib-3.5*centre_offset_std, centre_offset_equilib+3.5*centre_offset_std, color = 'darkviolet', alpha = 0.2)
 
+    ax.xaxis.set_minor_locator(MultipleLocator(20))
 
+    plt.grid(True, 'major', 'x')
+    plt.grid(True, 'minor', 'x', linestyle = ':')
     plt.ylabel('Centre Offset')
     plt.xlabel('Time / µs')
     plt.ylim(-3,3)
