@@ -159,6 +159,7 @@ def get_calibrated_diameter(df, equilibrium_data_points = 100):
     Assumes that the equillibrium_data_points are at final equillibrium shape/size'''
     
     width_final = df.diameter_um.tail(equilibrium_data_points).mean() * 1e-6
+    width_final_std = df.diameter_um.tail(equilibrium_data_points).std() * 1e-6
     AspectRatio_final = df.aspect_ratio.tail(equilibrium_data_points).mean()
 
     width_correction = (width_final/AspectRatio_final - width_final)
@@ -169,7 +170,7 @@ def get_calibrated_diameter(df, equilibrium_data_points = 100):
     '''print('Measured final diameter / µm = ' + str(round(1e6* width_final,3)) + '\nCalculated diameter error / µm = ' + str(round(1e6*width_correction,3)) + '\nCalculated final diameter / µm = ' + str(round(1e6*width_calibrated,3)))'''
 
     
-    return width_final, AspectRatio_final, width_correction, width_calibrated, A_0_calculated
+    return width_final, width_final_std, AspectRatio_final, width_correction, width_calibrated, A_0_calculated
 
 def get_calibrated_data(df, diameter_correction):
     '''Takes experimetnal data and blur corrction and adds this to all the diameter values
@@ -560,7 +561,7 @@ def save_experiment_parameters(save_location, df, df_trimmed):
     df.to_csv(save_location + '/Calibrated Data.txt', sep = '\t')
     df_trimmed.to_csv(save_location + '/Trimmed Calibrated Data.txt', sep = '\t')
     
-    d_final, AR_final, d_correction, d_calibrated, A_0_estimate = get_calibrated_diameter(df)
+    d_final, d_final_std, AR_final, d_correction, d_calibrated, A_0_estimate = get_calibrated_diameter(df)
     
     sig, sig_err, lor_fit, exp_fft = full_surface_tension_calculation(df_trimmed.time_s, df_trimmed.aspect_ratio.values, d_calibrated/2)
     
@@ -582,8 +583,8 @@ def save_experiment_parameters(save_location, df, df_trimmed):
             str(lor_fit[3][0])+'\t'+str(lor_fit[3][1])+'\t'+str(lor_fit[3][2])+'\t'+str(lor_fit[3][3]),
              '\nIf sample was water the expected diameter of a droplet with this oscillation frequency / m is:',
              str(2*get_water_true_diameter(sig, d_calibrated/2)),
-            '\nObserved final diameter / m \tCalculated Blur Correction /m \t Calculated Diameter / m',
-            str(d_final)+'\t'+str(d_correction)+'\t'+str(d_calibrated)]
+            '\nObserved final diameter / m \tObserved final diameter Std Dev / m \tCalculated Blur Correction /m \t Calculated Diameter / m',
+            str(d_final)+'\t'+str(d_final_std)+'\t'+str(d_correction)+'\t'+str(d_calibrated)]
     
     
     with open(save_location + '/Experiment Parameters.txt', 'w') as f:

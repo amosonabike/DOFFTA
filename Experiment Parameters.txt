@@ -14,5 +14,5 @@ Scale 	Horizontal Offset / Hz 	Width 	 Vertical Offset
 If sample was water the expected diameter of a droplet with this oscillation frequency / m is:
 4.0090622787993117e-05
 
-Observed final diameter / m 	Calculated Blur Correction /m 	 Calculated Diameter / m
-4.0057554926699454e-05	2.0404461891076618e-07	4.026159954561022e-05
+Observed final diameter / m 	Observed final diameter Std Dev / m 	Calculated Blur Correction /m 	 Calculated Diameter / m
+4.0057554926699454e-05	2.5320546683871434e-07	2.0404461891076618e-07	4.026159954561022e-05
