@@ -225,7 +225,7 @@ def get_fft(x_data, y_data, lower_frequency_cutoff = 7000):
 
 # ## LORENTZIAN FITTING
 
-def lorentzian_fit_func(x_data ,scale,offset, width, vert_offset):
+def lorentzian_fit_func(x_data, scale, offset, width, vert_offset):
     '''Describes Lorentzian function with a vertical offset'''
     dist = cauchy(offset, width)
     return scale * dist.pdf(x_data) + vert_offset
@@ -242,7 +242,7 @@ def get_lorentzian_fit(frequency_data, frequency_amplitude):
                                  frequency_data,
                                  frequency_amplitude,
                                  p0 = [10,40e3,10e3,0],
-                                bounds = ([1,0,1, -50],
+                                bounds = ([1,10e3,1, -50],
                                           [1e6,100e3,100e3, 50]))
 
         fitted_lorentzian = lorentzian_fit_func(fit_freq_range, lorentzian_parameters[0], lorentzian_parameters[1], lorentzian_parameters[2], lorentzian_parameters[3])
@@ -576,7 +576,7 @@ def slice_data(df, save_output = 'y', save_location = '/'):
 
     class Parameters:
         def __init__(self, rolling_window, smoothing_factor, tail_length, oscillation_sigma_threshold): 
-            self.properties = {'rolling_window' : 5,
+            self.properties = {'rolling_window' : 15,
                                'smoothing_factor' : 0.05,
                                'tail_length' : 100,
                                'oscillation_sigma_threshold' : 1.5}
@@ -807,6 +807,6 @@ def chopped_surface_tension_calculations(data_list, slice_points, equilibrium_ra
         print("\nDone")
  
     return surface_tensions, surface_tension_errs, lorentzian_list, fft_list
-    
+
 
 
